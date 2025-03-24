@@ -12,6 +12,18 @@ class RegisterView(CreateAPIView):
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        """Custom handling of email uniqueness before calling serializer"""
+        email = request.data.get("email")
+        print("email", email)
+        if User.objects.filter(email=email).exists():
+            return Response(
+                {"email": ["A user with this email already exists."]},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return super().create(request, *args, **kwargs)
+
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -29,6 +41,10 @@ class CustomLoginView(LoginView):
         # Modify response data to include role
         if response.status_code == status.HTTP_200_OK:
             response.data["role"] = "admin" if self.user.is_admin_user else "user"
+            response.data["email"] = self.user.email
+            response.data["username"] = self.user.username
+            response.data["dob"] = self.user.dob
+            response.data["phone_number"] = self.user.phone_number
 
         return response
 

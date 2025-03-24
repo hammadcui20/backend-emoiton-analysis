@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-x3y6ed5%oxol+wg_=^ye$89oz-4b8e$k^p8f*tu*yp3!n%)q7&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['52.174.64.176:8000','52.174.64.176']
+ALLOWED_HOSTS = ['52.174.64.176:8000','52.174.64.176', '127.0.0.1:8000','127.0.0.1']
 
 # Application definition
 
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     'dj_rest_auth',
     "sentimentapp",
-    "users"
+    "users",
+    "support"
 ]
 
 MIDDLEWARE = [

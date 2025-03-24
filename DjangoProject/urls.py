@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('sentimentapp/', include('sentimentapp.urls')),
     path('users/', include('users.urls')),
+    path('support/', include('support.urls')),
 ]

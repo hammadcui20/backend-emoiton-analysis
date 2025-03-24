@@ -10,20 +10,35 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'username', 'email', 'dob', 'phone_number']
 
 
+from rest_framework.validators import UniqueValidator
+from django.db import IntegrityError
+from rest_framework.exceptions import ValidationError
+
+
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, validators=[validate_password])
+    role = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'phone_number', 'dob']
+        fields = ['username', 'email', 'password', 'phone_number', 'dob', 'role']
+
+    def get_role(self, obj):
+        """Determine the user's role based on their flags."""
+        if obj.is_admin_user:
+            return "admin"
+        elif obj.is_analyst:
+            return "user"
+        return "user"
 
     def create(self, validated_data):
+        """Create a new user if validation passes."""
         user = User.objects.create_user(
             username=validated_data['username'],
             email=validated_data['email'],
             password=validated_data['password'],
-            phone_number=validated_data['phone_number'],
-            dob=validated_data['dob']
+            phone_number=validated_data.get('phone_number'),  # Use .get() for optional fields
+            dob=validated_data.get('dob')
         )
         return user
 
@@ -39,6 +54,8 @@ class CustomLoginSerializer(LoginSerializer):
         # Include any additional user details if needed
         data["email"] = user.email
         data["username"] = user.username
+        data["dob"] = user.dob
+        data["phone_number"] = user.phone_number
 
         return data
 
