@@ -5,9 +5,18 @@ from dj_rest_auth.serializers import LoginSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
+    user_role = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'dob', 'phone_number']
+        fields = ['id', 'username', 'email', 'dob', 'phone_number', 'user_role']
+
+    def get_user_role(self, obj):
+        if obj.is_admin_user:
+            return "admin"
+        elif obj.is_analyst:
+            return "user"
+        return "user"
 
 
 from rest_framework.validators import UniqueValidator
