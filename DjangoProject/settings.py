@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     "users",
     "support"
 ]
+DJANGO_REST_AUTH = {
+    'PASSWORD_RESET_CONFIRM_URL': 'myapp://reset-password/{uid}/{token}/',
+    'PASSWORD_RESET_SERIALIZER': 'dj_rest_auth.serializers.PasswordResetConfirmSerializer'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -134,3 +138,13 @@ REST_FRAMEWORK = {
 CSRF_COOKIE_HTTPONLY = False
 CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE   = False
+SITE_ID = 1
+
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# For Production, use SMTP settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'bakir0349@gmail.com'
+EMAIL_HOST_PASSWORD = 'lfgnxyvxwawhxuwx'

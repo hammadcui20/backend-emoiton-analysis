@@ -101,13 +101,6 @@ class PerformanceView(generics.GenericAPIView):
 from dj_rest_auth.views import PasswordResetView, PasswordResetConfirmView
 
 
-class ForgotPasswordView(PasswordResetView):
-    pass
-
-
-class ResetPasswordView(PasswordResetConfirmView):
-    pass  # Uses built-in functionality
-
 
 class ProfileView(generics.RetrieveUpdateAPIView):
     serializer_class = UserSerializer
